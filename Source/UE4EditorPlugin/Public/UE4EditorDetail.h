@@ -1,7 +1,9 @@
 #pragma once
 #include "IDetailCustomization.h"
-#include "SharedPointer.h"
 #include "Reply.h"
+#include "CoreMinimal.h"
+#include "SSCSEditor.h"
+
 
 class FUE4EditorDetail : public IDetailCustomization {
 private:
@@ -16,5 +18,9 @@ public:
 
 	void CustomizeDetails(const TSharedPtr<IDetailLayoutBuilder>& DetailBuilder) override { CustomizeDetails(*DetailBuilder); }
 
-	static FReply RenameComponent(IDetailLayoutBuilder* DetailBuilder, FString NewName);
+	static FReply RenameComponent(IDetailLayoutBuilder* DetailBuilder, FString TemplateName);
+
+private:
+
+	static bool CheckNewName(UBlueprint* Blueprint, FSCSEditorTreeNodePtrType NodePtr, FString NewName);
 };
