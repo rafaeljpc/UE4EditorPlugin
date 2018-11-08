@@ -57,6 +57,10 @@ FReply FUE4EditorDetail::RenameComponent(IDetailLayoutBuilder * DetailBuilder, F
 
 	USceneComponent* FirstComponent = ComponentsBeingRenamed[0];
 
+	UObject* Outer = FirstComponent->GetOuter();
+	if (!IsValid(Outer))
+		return FReply::Unhandled();
+
 	TSharedPtr<IBlueprintEditor> BPEditor = FKismetEditorUtilities::GetIBlueprintEditorForObject(FirstComponent, false);
 	if (!BPEditor->IsBlueprintEditor())
 		return FReply::Unhandled();
@@ -85,11 +89,13 @@ FReply FUE4EditorDetail::RenameComponent(IDetailLayoutBuilder * DetailBuilder, F
 		FName OldName = Node->GetSCSNode()->GetVariableName();
 
 		UE_LOG(LogTemp, Log, TEXT("Renaming %s to %s"), *OldName.ToString(), *NewName);
+		auto SCSNode = Node->GetSCSNode();
 		Node->GetSCSNode()->SetVariableName(FName(*NewName));
 
 		Index++;
 	}
 
+	SSCSEditor->UpdateTree();
 
 	return FReply::Handled();
 }
