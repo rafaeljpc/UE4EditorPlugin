@@ -12,7 +12,6 @@
  * within this plugin.
  */
 class IUE4EditorPlugin : public IModuleInterface {
-
 public:
 
 	/**
@@ -33,5 +32,6 @@ public:
 	static inline bool IsAvailable() {
 		return FModuleManager::Get().IsModuleLoaded("UE4EditorPlugin");
 	}
+	
 };
 
