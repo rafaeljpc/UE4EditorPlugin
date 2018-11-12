@@ -14,7 +14,7 @@ class FUE4EditorPlugin : public IUE4EditorPlugin {
 protected:
 	static void OnGatherExtensions(TSharedPtr<FExtender> Extender, UBlueprint* Blueprint);
 
-	static void OpenBodyBuildDialog(UBlueprint* Blueprint);
+	static void OpenAddMeshDialog(UBlueprint* Blueprint);
 
 public:
 	/** IModuleInterface implementation */
@@ -22,25 +22,23 @@ public:
 	virtual void ShutdownModule() override;
 };
 
-class FMRABodyPluginCommands : public TCommands<FMRABodyPluginCommands> {
+class FUE4PluginCommands : public TCommands<FUE4PluginCommands> {
 
 public:
 	TSharedPtr< FUICommandInfo > PluginAction;
 
 public:
 
-	FMRABodyPluginCommands()
-		: TCommands<FMRABodyPluginCommands>(TEXT("UE4EditorPlugin"), NSLOCTEXT("Contexts", "UE4EditorPlugin", "UE4EditorPlugin Plugin"),
+	FUE4PluginCommands()
+		: TCommands<FUE4PluginCommands>(TEXT("UE4EditorPlugin"), NSLOCTEXT("Contexts", "UE4EditorPlugin", "UE4EditorPlugin Plugin"),
 		NAME_None, FUE4EditorPluginStyle::GetStyleSetName()) {
 	}
 
 	// TCommands<> interface
 	virtual void RegisterCommands() override {
-		UI_COMMAND(PluginAction, "Plugin Action", "", EUserInterfaceActionType::Button, FInputGesture());
+		UI_COMMAND(PluginAction, "Add Mesh", "Add Mesh X times", EUserInterfaceActionType::Button, FInputGesture());
 	}
 };
-
-IMPLEMENT_MODULE(FUE4EditorPlugin, UE4EditorPlugin)
 
 void FUE4EditorPlugin::StartupModule() {
 	// This code will execute after your module is loaded into memory (but after global variables are initialized, of course.)
@@ -48,7 +46,7 @@ void FUE4EditorPlugin::StartupModule() {
 	FUE4EditorPluginStyle::Initialize();
 	FUE4EditorPluginStyle::ReloadTextures();
 
-	FMRABodyPluginCommands::Register();
+	FUE4PluginCommands::Register();
 
 	FBlueprintEditorModule& BPEditorModule = FModuleManager::LoadModuleChecked<FBlueprintEditorModule>("Kismet");
 	BPEditorModule.OnGatherBlueprintMenuExtensions().AddStatic(&FUE4EditorPlugin::OnGatherExtensions);
@@ -66,7 +64,7 @@ void FUE4EditorPlugin::ShutdownModule() {
 
 	FUE4EditorPluginStyle::Shutdown();
 
-	FMRABodyPluginCommands::Unregister();
+	FUE4PluginCommands::Unregister();
 
 }
 
@@ -81,19 +79,20 @@ void FUE4EditorPlugin::OnGatherExtensions(TSharedPtr<FExtender> Extender, UBluep
 	TSharedPtr<FUICommandList> PluginCommands = MakeShareable(new FUICommandList);
 
 	PluginCommands->MapAction(
-		FMRABodyPluginCommands::Get().PluginAction,
-		FExecuteAction::CreateStatic(&FUE4EditorPlugin::OpenBodyBuildDialog, Blueprint),
+		FUE4PluginCommands::Get().PluginAction,
+		FExecuteAction::CreateStatic(&FUE4EditorPlugin::OpenAddMeshDialog, Blueprint),
 		FCanExecuteAction());
 
 	Extender->AddToolBarExtension("Settings", EExtensionHook::After, PluginCommands,
 			FToolBarExtensionDelegate::CreateLambda([](FToolBarBuilder& Builder) {
-			Builder.AddToolBarButton(FMRABodyPluginCommands::Get().PluginAction);
+			Builder.AddToolBarButton(FUE4PluginCommands::Get().PluginAction);
 		}));
 }
 
-void FUE4EditorPlugin::OpenBodyBuildDialog(UBlueprint* Blueprint) {
-	TSharedPtr<SWindow> Window;
-	/*TSharedPtr<SMRABodyBuilderDialog> Dialog;
+void FUE4EditorPlugin::OpenAddMeshDialog(UBlueprint* Blueprint) {
+	UE_LOG(LogTemp, Log, TEXT("FUE4EditorPlugin::OpenAddMeshDialog"));
+	/*TSharedPtr<SWindow> Window;
+	TSharedPtr<SMRABodyBuilderDialog> Dialog;
 
 	Window = SNew(SWindow)
 		.Title(LOCTEXT("MRBodyBuilder.Title", "MR BodyBuilder"))
@@ -110,5 +109,7 @@ void FUE4EditorPlugin::OpenBodyBuildDialog(UBlueprint* Blueprint) {
 
 	FSlateApplication::Get().AddWindow(Window.ToSharedRef());*/
 }
+
+IMPLEMENT_MODULE(FUE4EditorPlugin, UE4EditorPlugin)
 
 #undef LOCTEXT_NAMESPACE
