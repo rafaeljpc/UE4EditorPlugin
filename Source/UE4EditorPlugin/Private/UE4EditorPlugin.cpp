@@ -1,6 +1,6 @@
 // Copyright 1998-2018 Epic Games, Inc. All Rights Reserved.
 
-#include "IUE4EditorPlugin.h"
+#include "UE4EditorPlugin.h"
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 #include "Framework/Commands/Commands.h"
