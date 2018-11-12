@@ -35,6 +35,7 @@ namespace UnrealBuildTool.Rules
                 new string[]
                 {
                     "Core",
+                    "CoreUObject",
                     "Projects",
                     "InputCore",
                     "UnrealEd",
@@ -44,12 +45,11 @@ namespace UnrealBuildTool.Rules
                     "EditorWidgets",
                     "Kismet",
                     "PropertyEditor",
-                    "CoreUObject",
                     "Engine",
                     "Slate",
                     "SlateCore",
                     "BlueprintGraph",
-                    "EditorStyle",
+                    "EditorStyle"
                 }
                 );
 

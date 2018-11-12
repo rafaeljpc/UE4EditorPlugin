@@ -7,6 +7,7 @@
 #include "PropertyEditorModule.h"
 #include "UE4EditorDetail.h"
 #include "UE4EditorPluginStyle.h"
+#include "AddMeshDialog.h"
 
 #define LOCTEXT_NAMESPACE "FUE4EditorPlugin"
 
@@ -91,23 +92,24 @@ void FUE4EditorPlugin::OnGatherExtensions(TSharedPtr<FExtender> Extender, UBluep
 
 void FUE4EditorPlugin::OpenAddMeshDialog(UBlueprint* Blueprint) {
 	UE_LOG(LogTemp, Log, TEXT("FUE4EditorPlugin::OpenAddMeshDialog"));
-	/*TSharedPtr<SWindow> Window;
-	TSharedPtr<SMRABodyBuilderDialog> Dialog;
-
+	TSharedPtr<SWindow> Window;
+	
 	Window = SNew(SWindow)
-		.Title(LOCTEXT("MRBodyBuilder.Title", "MR BodyBuilder"))
-		.SizingRule(ESizingRule::Autosized)
+		.Title(LOCTEXT("AddMeshDialog.Title", "Add Mesh X Times"))
+		.SizingRule(ESizingRule::UserSized)
+		.ClientSize(FVector2D(300.0f, 400.0f))
+		.IsTopmostWindow(true)
 		.SupportsMaximize(false).SupportsMinimize(false)
 		[
 			SNew(SBorder)
 			.Padding(FMargin(10))
 		[
-			SNew(SMRABodyBuilderDialog)
+			SNew(SAddMeshDialog)
 			.Blueprint(Blueprint)
 		]
 		];
 
-	FSlateApplication::Get().AddWindow(Window.ToSharedRef());*/
+	FSlateApplication::Get().AddWindow(Window.ToSharedRef());
 }
 
 IMPLEMENT_MODULE(FUE4EditorPlugin, UE4EditorPlugin)
