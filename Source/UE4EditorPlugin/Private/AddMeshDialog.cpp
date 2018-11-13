@@ -1,10 +1,14 @@
 #include "AddMeshDialog.h"
-#include "Widgets/Layout/SGridPanel.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Input/SComboBox.h"
-#include "Widgets/Text/STextBlock.h"
+#include "Widgets/Input/SNumericEntryBox.h"
+#include "Widgets/Input/SVectorInputBox.h"
+#include "Widgets/Input/SRotatorInputBox.h"
 #include "Widgets/Input/SEditableTextBox.h"
+#include "Widgets/Layout/SGridPanel.h"
+#include "Widgets/Text/STextBlock.h"
 #include "PropertyCustomizationHelpers.h"
+
 
 
 #define LOCTEXT_NAMESPACE "AddMeshDialog"
@@ -14,8 +18,8 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 
 	ChildSlot[
 		SNew(SGridPanel)
-			.FillColumn(0, 0.2f)
-			.FillColumn(1, 0.8f)
+			.FillColumn(0, 0.4f)
+			.FillColumn(1, 0.6f)
 			
 			// Mesh
 			+ SGridPanel::Slot(0, 0)
@@ -40,8 +44,57 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 						
 				]
 
+			// Repetition
+			+ SGridPanel::Slot(0, 1)
+				.Padding(0, 10, 10, 0)
+				.VAlign(VAlign_Center)
+				[
+					SNew(STextBlock)
+						.Text(LOCTEXT("AddMeshDialog.Repetition", "Number of Repetition"))
+				]
+			+ SGridPanel::Slot(1, 1)
+				.Padding(0, 10, 0, 0)
+				[
+					SNew(SNumericEntryBox<int32>)
+						.AllowSpin(true)
+						.MinValue(0)
+						.MaxValue(TNumericLimits<int32>::Max())
+						.Value_Lambda([this] () -> int32 {
+							return Repetitions;
+						})
+						.OnValueCommitted_Lambda([this] (int32 NewValue, ETextCommit::Type CommitInfo) {
+							Repetitions = NewValue;
+						})
+				]
+
+			// Location Offset
+			+ SGridPanel::Slot(0, 2)
+				.Padding(0, 10, 10, 0)
+				.VAlign(VAlign_Center)
+				[
+					SNew(STextBlock)
+						.Text(LOCTEXT("AddMeshDialog.LocationOffset", "Location Offset"))
+				]
+			+ SGridPanel::Slot(1, 2)
+				.Padding(0, 10, 0, 0)
+				[
+					SNew(SVectorInputBox)
+						.bColorAxisLabels(true)
+						.AllowResponsiveLayout(true)
+						.AllowSpin(false)
+						.X_Lambda([this] () { return LocationOffset.X; })
+						.Y_Lambda([this] () { return LocationOffset.Y; })
+						.Z_Lambda([this] () { return LocationOffset.Z; })
+						.OnXCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { LocationOffset.X = NewValue; })
+						.OnYCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { LocationOffset.Y = NewValue; })
+						.OnZCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { LocationOffset.Z = NewValue; })
+				]
+
+			// Rotation Offset
+
+
 			// Confirm Button
-			+ SGridPanel::Slot(0, 3)
+			+ SGridPanel::Slot(0, 4)
 				.Padding(0, 10, 10, 0)
 				.VAlign(VAlign_Center)
 				.ColumnSpan(2)

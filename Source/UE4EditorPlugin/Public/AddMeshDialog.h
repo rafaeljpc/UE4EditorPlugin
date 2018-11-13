@@ -8,9 +8,6 @@
 #include "UE4EditorPlugin.h"
 #include "Engine/Blueprint.h"
 
-class SEditableTextBox;
-class SObjectPropertyEntryBox;
-
 DECLARE_DELEGATE(FOnStartAddMesh);
 
 class SAddMeshDialog : public SCompoundWidget {
@@ -40,5 +37,7 @@ private:
 	UBlueprint* Blueprint;
 
 	class UStaticMesh* StaticMesh;
-
+	int32 Repetitions;
+	FVector LocationOffset;
+	FRotator RotationOffset;
 };
