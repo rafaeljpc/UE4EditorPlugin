@@ -8,7 +8,7 @@
 #include "Widgets/Layout/SGridPanel.h"
 #include "Widgets/Text/STextBlock.h"
 #include "PropertyCustomizationHelpers.h"
-
+#include "AddMeshFunctionLibrary.h"
 
 
 #define LOCTEXT_NAMESPACE "AddMeshDialog"
@@ -144,11 +144,7 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 						.Text(FText::FromString("Build Body Region"))
 						.OnClicked_Lambda([this]() -> FReply {
 							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.Button.Click: Button Clicked"));
-							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.ComponentTemplateName = %s"), *ComponentTemplateName);
-							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.StaticMesh = %s"), *StaticMesh->GetPathName());
-							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.Repetitions = %d"), Repetitions);
-							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.LocationOffset = %s"), *LocationOffset.ToString());
-							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.RotationOffset = %s"), *RotationOffset.ToString());
+							UAddMeshFunctionLibrary::AddNMeshes(Blueprint, ComponentTemplateName, StaticMesh, Repetitions, LocationOffset, RotationOffset);
 
 							return FReply::Handled();
 						})

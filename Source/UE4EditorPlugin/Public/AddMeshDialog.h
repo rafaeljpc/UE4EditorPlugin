@@ -8,17 +8,12 @@
 #include "UE4EditorPlugin.h"
 #include "Engine/Blueprint.h"
 
-DECLARE_DELEGATE(FOnStartAddMesh);
-
 class SAddMeshDialog : public SCompoundWidget {
 
 public:
 	SLATE_BEGIN_ARGS(SAddMeshDialog) {}
 		// Blueprint that will receive the meshes
 		SLATE_ATTRIBUTE(UBlueprint*, Blueprint)
-
-		/** Action to perform when create clicked */
-		SLATE_EVENT(FOnStartAddMesh, OnStartAddMesh)
 
 	SLATE_END_ARGS()
 
@@ -32,8 +27,6 @@ public:
 	void ClosingWindow(const TSharedRef<SWindow>& InWindow);
 
 private:
-	FOnStartAddMesh OnStartAddMesh;
-
 	UBlueprint* Blueprint;
 
 	FString ComponentTemplateName;

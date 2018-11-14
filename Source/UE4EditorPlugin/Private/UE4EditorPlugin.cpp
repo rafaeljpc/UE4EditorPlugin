@@ -96,17 +96,17 @@ void FUE4EditorPlugin::OpenAddMeshDialog(UBlueprint* Blueprint) {
 	
 	Window = SNew(SWindow)
 		.Title(LOCTEXT("AddMeshDialog.Title", "Add Mesh X Times"))
-		.SizingRule(ESizingRule::UserSized)
-		.ClientSize(FVector2D(500.0f, 300.0f))
+		.SizingRule(ESizingRule::Autosized)
+		.ClientSize(FVector2D(500.0f, 220.0f))
 		.IsTopmostWindow(true)
 		.SupportsMaximize(false).SupportsMinimize(false)
 		[
 			SNew(SBorder)
-			.Padding(FMargin(10))
-		[
-			SNew(SAddMeshDialog)
-			.Blueprint(Blueprint)
-		]
+				.Padding(FMargin(10))
+				[
+					SNew(SAddMeshDialog)
+						.Blueprint(Blueprint)
+				]
 		];
 
 	FSlateApplication::Get().AddWindow(Window.ToSharedRef());
