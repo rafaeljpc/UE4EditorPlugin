@@ -97,7 +97,7 @@ void FUE4EditorPlugin::OpenAddMeshDialog(UBlueprint* Blueprint) {
 	Window = SNew(SWindow)
 		.Title(LOCTEXT("AddMeshDialog.Title", "Add Mesh X Times"))
 		.SizingRule(ESizingRule::UserSized)
-		.ClientSize(FVector2D(400.0f, 200.0f))
+		.ClientSize(FVector2D(500.0f, 300.0f))
 		.IsTopmostWindow(true)
 		.SupportsMaximize(false).SupportsMinimize(false)
 		[

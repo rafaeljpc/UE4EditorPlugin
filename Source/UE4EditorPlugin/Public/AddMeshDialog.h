@@ -36,6 +36,7 @@ private:
 
 	UBlueprint* Blueprint;
 
+	FString ComponentTemplateName;
 	class UStaticMesh* StaticMesh;
 	int32 Repetitions;
 	FVector LocationOffset;

@@ -21,16 +21,36 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 			.FillColumn(0, 0.4f)
 			.FillColumn(1, 0.6f)
 			
-			// Mesh
-			+ SGridPanel::Slot(0, 0)
+			// Component Name Template 
+
+			+SGridPanel::Slot(0, 0)
 				.Padding(0, 0, 10, 0)
+				.VAlign(VAlign_Center)
+				[
+					SNew(STextBlock)
+						.Text(LOCTEXT("AddMeshDialog.ComponentNameTemplate", "Component Name Template"))
+				]
+			+ SGridPanel::Slot(1, 0)
+				.Padding(0, 0, 0, 0)
+				[
+					SNew(SEditableTextBox)
+					.Text_Lambda([this] () -> FText { return FText::FromString(ComponentTemplateName); })
+						.ToolTipText(LOCTEXT("AddMeshDialog.ComponentNameTemplate", "Component Name Template, <name>_<index>"))
+						.OnTextCommitted_Lambda([this] (const FText& InText, ETextCommit::Type InCommitType) {
+							ComponentTemplateName = InText.ToString();
+						})
+				]
+			
+			// Mesh
+			+ SGridPanel::Slot(0, 1)
+				.Padding(0, 10, 10, 0)
 				.VAlign(VAlign_Center)
 				[
 					SNew(STextBlock)
 						.Text(LOCTEXT("AddMeshDialog.Mesh", "Static Mesh"))
 				]
-			+ SGridPanel::Slot(1, 0)
-				.Padding(0, 0, 0, 0)
+			+ SGridPanel::Slot(1, 1)
+				.Padding(0, 10, 0, 0)
 				[
 					SNew(SObjectPropertyEntryBox)
 						.AllowedClass(UStaticMesh::StaticClass())
@@ -45,14 +65,14 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 				]
 
 			// Repetition
-			+ SGridPanel::Slot(0, 1)
+			+ SGridPanel::Slot(0, 2)
 				.Padding(0, 10, 10, 0)
 				.VAlign(VAlign_Center)
 				[
 					SNew(STextBlock)
 						.Text(LOCTEXT("AddMeshDialog.Repetition", "Number of Repetition"))
 				]
-			+ SGridPanel::Slot(1, 1)
+			+ SGridPanel::Slot(1, 2)
 				.Padding(0, 10, 0, 0)
 				[
 					SNew(SNumericEntryBox<int32>)
@@ -68,14 +88,14 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 				]
 
 			// Location Offset
-			+ SGridPanel::Slot(0, 2)
+			+ SGridPanel::Slot(0, 3)
 				.Padding(0, 10, 10, 0)
 				.VAlign(VAlign_Center)
 				[
 					SNew(STextBlock)
 						.Text(LOCTEXT("AddMeshDialog.LocationOffset", "Location Offset"))
 				]
-			+ SGridPanel::Slot(1, 2)
+			+ SGridPanel::Slot(1, 3)
 				.Padding(0, 10, 0, 0)
 				[
 					SNew(SVectorInputBox)
@@ -91,10 +111,31 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 				]
 
 			// Rotation Offset
+			+ SGridPanel::Slot(0, 4)
+				.Padding(0, 10, 10, 0)
+				.VAlign(VAlign_Center)
+				[
+					SNew(STextBlock)
+						.Text(LOCTEXT("AddMeshDialog.LocationOffset", "Rotation Offset"))
+				]
+			+ SGridPanel::Slot(1, 4)
+				.Padding(0, 10, 0, 0)
+				[
+					SNew(SRotatorInputBox)
+						.bColorAxisLabels(true)
+						.AllowResponsiveLayout(true)
+						.AllowSpin(true)
+						.Roll_Lambda([this] () { return RotationOffset.Roll; })
+						.Pitch_Lambda([this] () { return RotationOffset.Pitch; })
+						.Yaw_Lambda([this] () { return RotationOffset.Yaw; })						
+						.OnRollCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { RotationOffset.Roll = NewValue; })
+						.OnPitchCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { RotationOffset.Pitch = NewValue; })
+						.OnYawCommitted_Lambda([this] (float NewValue, ETextCommit::Type CommitInfo) { RotationOffset.Yaw = NewValue; })
+				]
 
 
 			// Confirm Button
-			+ SGridPanel::Slot(0, 4)
+			+ SGridPanel::Slot(0, 5)
 				.Padding(0, 10, 10, 0)
 				.VAlign(VAlign_Center)
 				.ColumnSpan(2)
@@ -103,6 +144,12 @@ void SAddMeshDialog::Construct(const FArguments& InArgs) {
 						.Text(FText::FromString("Build Body Region"))
 						.OnClicked_Lambda([this]() -> FReply {
 							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.Button.Click: Button Clicked"));
+							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.ComponentTemplateName = %s"), *ComponentTemplateName);
+							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.StaticMesh = %s"), *StaticMesh->GetPathName());
+							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.Repetitions = %d"), Repetitions);
+							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.LocationOffset = %s"), *LocationOffset.ToString());
+							UE_LOG(LogTemp, Log, TEXT("SAddMeshDialog.RotationOffset = %s"), *RotationOffset.ToString());
+
 							return FReply::Handled();
 						})
 				]
