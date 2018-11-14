@@ -46,7 +46,8 @@ void UAddMeshFunctionLibrary::AddNMeshes(UBlueprint* Blueprint, FString Componen
 
 		USCS_Node* MeshNode = Blueprint->SimpleConstructionScript->CreateNode(UStaticMeshComponent::StaticClass(), *CompName);
 		UStaticMeshComponent* MeshComponent = Cast<UStaticMeshComponent>(MeshNode->ComponentTemplate);
-
+		MeshComponent->SetRelativeLocation(i * LocationStep);
+		MeshComponent->SetRelativeRotation(i * RotationStep);
 		MeshComponent->SetStaticMesh(StaticMesh);
 
 		ImportNode->AddChildNode(MeshNode);
